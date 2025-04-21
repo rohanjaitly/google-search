@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #E8E8E8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #banner {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #logo {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 15px;
+      width: 500px;
+      font-size: 18px;
+      border-radius: 24px;
+      border: 1px solid #444444;
+      background-color: #333333;
+      color: #E8E8E8;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .search-button, .lucky-button, .fullscreen-button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: 1px solid #555555;
+      background-color: #444444;
+      color: #E8E8E8;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .search-button:hover, .lucky-button:hover, .fullscreen-button:hover {
+      background-color: #555555;
+    }
+
+    iframe {
+      width: 100%;
+      height: 90vh;
+      border: none;
+      margin-top: 20px;
+    }
+
+    /* Search Again Button */
+    #backToSearch {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      padding: 10px 15px;
+      font-size: 14px;
+      background-color: #444;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+    }
+
+    #backToSearch:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Banner -->
+  <div id="banner">
+    <img id="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google Logo">
+    <form onsubmit="doSearch(); return false;">
+      <input type="text" id="searchInput" placeholder="Search Google..." />
+    </form>
+    <div class="button-container">
+      <button class="search-button" onclick="doSearch()">Google Search</button>
+      <button class="lucky-button" onclick="doLuckySearch()">I'm Feeling Lucky</button>
+      <button class="fullscreen-button" onclick="fullscreenIframe()">Fullscreen Results</button>
+    </div>
+  </div>
+
+  <!-- Results Iframe -->
+  <iframe id="resultsFrame" allowfullscreen></iframe>
+
+  <!-- Floating "Search Again" Button -->
+  <button id="backToSearch" onclick="showSearch()">🔍 Search Again</button>
+
+  <script>
+    function doSearch() {
+      const query = document.getElementById('searchInput').value;
+      const frame = document.getElementById('resultsFrame');
+      const banner = document.getElementById('banner');
+      banner.style.display = 'none';
+      frame.src = "https://www.google.com/search?q=" + encodeURIComponent(query);
+      document.getElementById('backToSearch').style.display = 'block';
+    }
+
+    function doLuckySearch() {
+      const query = document.getElementById('searchInput').value;
+      const frame = document.getElementById('resultsFrame');
+      const banner = document.getElementById('banner');
+      banner.style.display = 'none';
+      frame.src = "https://www.google.com/search?btnI&q=" + encodeURIComponent(query);
+      document.getElementById('backToSearch').style.display = 'block';
+    }
+
+    function fullscreenIframe() {
+      const iframe = document.getElementById("resultsFrame");
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.mozRequestFullScreen) {
+        iframe.mozRequestFullScreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+      }
+    }
+
+    function showSearch() {
+      document.getElementById('banner').style.display = 'block';
+      document.getElementById('resultsFrame').src = '';
+      document.getElementById('backToSearch').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
