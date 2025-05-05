@@ -157,12 +157,24 @@
       if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          document.body.style.backgroundImage = `url('${e.target.result}')`;
+          const imageUrl = e.target.result;
+          document.body.style.backgroundImage = `url('${imageUrl}')`;
+          localStorage.setItem("customBackground", imageUrl);
         };
         reader.readAsDataURL(file);
       }
     }
+
+    // Load saved background on page load
+    window.onload = function () {
+      const savedBackground = localStorage.getItem("customBackground");
+      if (savedBackground) {
+        document.body.style.backgroundImage = `url('${savedBackground}')`;
+      }
+    };
   </script>
 
 </body>
 </html>
+
+
