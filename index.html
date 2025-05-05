@@ -13,6 +13,9 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     #banner {
@@ -44,7 +47,7 @@
       justify-content: center;
     }
 
-    .search-button, .lucky-button, .fullscreen-button {
+    .search-button, .lucky-button, .fullscreen-button, .customize-button {
       padding: 10px 20px;
       font-size: 14px;
       border-radius: 4px;
@@ -55,7 +58,7 @@
       transition: background-color 0.2s ease;
     }
 
-    .search-button:hover, .lucky-button:hover, .fullscreen-button:hover {
+    .search-button:hover, .lucky-button:hover, .fullscreen-button:hover, .customize-button:hover {
       background-color: #555555;
     }
 
@@ -66,7 +69,6 @@
       margin-top: 20px;
     }
 
-    /* Search Again Button */
     #backToSearch {
       position: fixed;
       top: 20px;
@@ -85,11 +87,15 @@
     #backToSearch:hover {
       background-color: #555;
     }
+
+    #fileInput {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Banner -->
+  <!-- Banner -->
   <div id="banner">
     <img id="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google Logo">
     <form onsubmit="doSearch(); return false;">
@@ -99,21 +105,22 @@
       <button class="search-button" onclick="doSearch()">Google Search</button>
       <button class="lucky-button" onclick="doLuckySearch()">I'm Feeling Lucky</button>
       <button class="fullscreen-button" onclick="fullscreenIframe()">Fullscreen Results</button>
+      <button class="customize-button" onclick="document.getElementById('fileInput').click()">Customize</button>
+      <input type="file" id="fileInput" accept="image/*" onchange="changeBackground(event)">
     </div>
   </div>
 
-  <!-- Results Iframe -->
+  <!-- Iframe -->
   <iframe id="resultsFrame" allowfullscreen></iframe>
 
-  <!-- Floating "Search Again" Button -->
+  <!-- Floating Search Again -->
   <button id="backToSearch" onclick="showSearch()">🔍 Search Again</button>
 
   <script>
     function doSearch() {
       const query = document.getElementById('searchInput').value;
       const frame = document.getElementById('resultsFrame');
-      const banner = document.getElementById('banner');
-      banner.style.display = 'none';
+      document.getElementById('banner').style.display = 'none';
       frame.src = "https://www.google.com/search?q=" + encodeURIComponent(query);
       document.getElementById('backToSearch').style.display = 'block';
     }
@@ -121,8 +128,7 @@
     function doLuckySearch() {
       const query = document.getElementById('searchInput').value;
       const frame = document.getElementById('resultsFrame');
-      const banner = document.getElementById('banner');
-      banner.style.display = 'none';
+      document.getElementById('banner').style.display = 'none';
       frame.src = "https://www.google.com/search?btnI&q=" + encodeURIComponent(query);
       document.getElementById('backToSearch').style.display = 'block';
     }
@@ -144,6 +150,17 @@
       document.getElementById('banner').style.display = 'block';
       document.getElementById('resultsFrame').src = '';
       document.getElementById('backToSearch').style.display = 'none';
+    }
+
+    function changeBackground(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.body.style.backgroundImage = `url('${e.target.result}')`;
+        };
+        reader.readAsDataURL(file);
+      }
     }
   </script>
 
